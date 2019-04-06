@@ -1,0 +1,37 @@
+@isTest
+public class TestFindDupes {
+static testMethod void testDupes() {
+
+Contact c = new Contact();
+c.FirstName = 'Mary';
+c.LastName = 'Brown';
+c.Email = 'marybrown@yahoo.com';
+insert c;
+
+Lead dupeLead = new Lead();
+dupeLead.FirstName = 'Mary';
+dupeLead.LastName = 'Browne';
+dupeLead.Company = 'OKC Thunder';
+dupeLead.Email = 'marybrown@yahoo.com';
+
+try {
+insert dupeLead; }
+catch (Exception e) {
+system.debug('An error has happened, as predicted'); }
+
+List<Lead> dupes = [Select Id FROM Lead WHERE Email = 'marybrown@yahoo.com'];
+System.assertEquals(0, dupes.size());
+
+Lead goodLead = new Lead();
+goodLead.FirstName = 'Linda';
+goodLead.LastName = 'Bowman';
+goodLead.Company = 'Detroit Pistons';
+goodLead.Email = 'lindabowman@yahoo.com';
+
+insert goodLead;
+
+List<Lead> noDupes = [Select Id FROM Lead WHERE Email = 'lindabowman@yahoo.com'];
+System.assertEquals(1, noDupes.size());
+
+}
+}
